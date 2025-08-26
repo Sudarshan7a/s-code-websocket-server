@@ -1,0 +1,19 @@
+{
+  "name": "websocket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.7.1",
+  "devDependencies": {
+    "y-websocket": "^3.0.0"
+  },
+  "dependencies": {
+    "@y/websocket-server": "^0.1.1"
+  }
+}
