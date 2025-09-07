@@ -143,10 +143,8 @@ wss.on("connection", (ws, req) => {
 
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`Custom WebSocket server running on port ${PORT}`);
-  console.log(`Health check available at http://0.0.0.0:${PORT}/health`);
-  console.log(
-    `Room management API available at http://0.0.0.0:${PORT}/api/rooms/:roomId/end`
-  );
+  console.log(`Health check endpoint: /health`);
+  console.log(`Room management API endpoint: /api/rooms/:roomId/end`);
 });
 
 // Handle server startup errors
