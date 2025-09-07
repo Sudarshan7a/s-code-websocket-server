@@ -4,6 +4,9 @@ import { createServer } from "http";
 
 const PORT = process.env.PORT || 1234;
 
+console.log(`Starting server with PORT: ${PORT}`);
+console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+
 // Track active rooms and their connections
 const activeRooms = new Map();
 
@@ -138,12 +141,30 @@ wss.on("connection", (ws, req) => {
   });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, "0.0.0.0", () => {
   console.log(`Custom WebSocket server running on port ${PORT}`);
-  console.log(`Health check available at http://localhost:${PORT}/health`);
+  console.log(`Health check available at http://0.0.0.0:${PORT}/health`);
   console.log(
-    `Room management API available at http://localhost:${PORT}/api/rooms/:roomId/end`
+    `Room management API available at http://0.0.0.0:${PORT}/api/rooms/:roomId/end`
   );
+});
+
+// Handle server startup errors
+server.on('error', (error) => {
+  console.error('Server startup error:', error);
+  process.exit(1);
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  process.exit(1);
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
 });
 
 // Graceful shutdown
