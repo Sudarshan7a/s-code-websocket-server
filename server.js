@@ -1,11 +1,13 @@
 import { WebSocketServer, WebSocket } from "ws";
 import express from "express";
 import { createServer } from "http";
+import dotenv from "dotenv";
+
+// Load environment variables from .env.local
+dotenv.config({ path: ".env.local" });
 
 const PORT = process.env.PORT || 1234;
-
-console.log(`Starting server with PORT: ${PORT}`);
-console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+const HOST = process.env.HOST || "0.0.0.0";
 
 // Track active rooms and their connections
 const activeRooms = new Map();
@@ -141,28 +143,12 @@ wss.on("connection", (ws, req) => {
   });
 });
 
-server.listen(PORT, "0.0.0.0", () => {
-  console.log(`Custom WebSocket server running on port ${PORT}`);
-  console.log(`Health check endpoint: /health`);
-  console.log(`Room management API endpoint: /api/rooms/:roomId/end`);
-});
-
-// Handle server startup errors
-server.on('error', (error) => {
-  console.error('Server startup error:', error);
-  process.exit(1);
-});
-
-// Handle uncaught exceptions
-process.on('uncaughtException', (error) => {
-  console.error('Uncaught Exception:', error);
-  process.exit(1);
-});
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  process.exit(1);
+server.listen(PORT, HOST, () => {
+  console.log(`Custom WebSocket server running on ${HOST}:${PORT}`);
+  console.log(`Health check available at http://${HOST}:${PORT}/health`);
+  console.log(
+    `Room management API available at http://${HOST}:${PORT}/api/rooms/:roomId/end`
+  );
 });
 
 // Graceful shutdown
